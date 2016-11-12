@@ -1,0 +1,72 @@
+\usepackage{tikz}
+
+\newcommand{\parquetry}[1]{
+\begin{tikzpicture}[every node/.style={draw,circle,thick,fill=black,inner sep=2pt}]
+\def\size{#1}
+\pgfmathparse{int(4*\size+1)}
+\xdef\horizontal{\pgfmathresult}
+\pgfmathparse{int(4*\size + 1)}
+\xdef\vertical{\pgfmathresult}
+\pgfmathparse{\horizontal-1}
+\xdef\hori{\pgfmathresult}
+\pgfmathparse{\vertical-1}
+\xdef\vert{\pgfmathresult}
+
+%graph
+
+%vertices
+\foreach \x in {1,...,\horizontal}
+	\foreach \y in {1,...,\vertical}
+	\node (\x a\y) at (\x,\y) {};
+	
+%edges
+%fixed edges
+\foreach \x in {1,...,\hori}
+	\foreach \y in {1,3,...,\vertical}
+	{\pgfmathsetmacro{\next}{int(\x+1)}
+	\draw (\x a\y)--(\next a\y);}
+
+\foreach \y in {1,...,\vert}
+	\foreach \x in {1,3,...,\horizontal}
+	{\pgfmathsetmacro{\next}{int(\y+1)}
+	\draw (\x a\y)--(\x a\next);}
+	
+%horizontal edges
+\foreach \x in {1,5,...,\hori}
+	\foreach \y in {1,...,\vertical}{
+	\pgfmathparse{Mod(\y,4)==0?1:0}
+	\ifnum\pgfmathresult>0{
+		\pgfmathsetmacro{\next}{int(\x+2)}
+		\draw (\x a\y) -- (\next a\y);}
+	\else {}
+	\fi}
+
+\foreach \x in {3,7,...,\hori}
+	\foreach \y in {1,...,\vertical}{
+	\pgfmathparse{Mod(\y,4)==2?1:0}
+	\ifnum\pgfmathresult>0{
+		\pgfmathsetmacro{\next}{int(\x+2)}
+		\draw (\x a\y) -- (\next a\y);}
+	\else {}
+	\fi}
+	
+%vertical edges
+\foreach \y in {1,5,...,\vert}
+	\foreach \x in {1,...,\horizontal}{
+	\pgfmathparse{Mod(\x,4)==2?1:0}
+	\ifnum\pgfmathresult>0{
+		\pgfmathsetmacro{\next}{int(\y+2)}
+		\draw (\x a\y) -- (\x a\next);}
+	\else {}
+	\fi}
+	
+\foreach \y in {3,7,...,\vert}
+	\foreach \x in {1,...,\horizontal}{
+	\pgfmathparse{Mod(\x,4)==0?1:0}
+	\ifnum\pgfmathresult>0{
+		\pgfmathsetmacro{\next}{int(\y+2)}
+		\draw(\x a\y) -- (\x a\next);}
+	\else {}
+	\fi}
+\end{tikzpicture}
+}

@@ -1,0 +1,35 @@
+\usepackage{tikz}
+
+\newcommand{\horizontaldomino}[1]{
+\begin{tikzpicture}[every node/.style={draw,circle,thick,fill=black,inner sep=2pt}]
+\def\size{#1}
+\pgfmathparse{(2*\size)+1}
+\xdef\hori{\pgfmathresult}
+\pgfmathparse{\size + 1}
+\xdef\vertical{\pgfmathresult}
+
+%graph
+
+%vertices
+\foreach \x in {1,...,\hori}
+	\foreach \y in {1,...,\vertical}
+	\node (\x\y) at (\x,\y) {};
+	
+%edges
+%horizontal
+\pgfmathparse{\hori-1}
+\xdef\horiz{\pgfmathresult}
+\foreach \x in {1,...,\horiz}
+	\foreach \y in {1,...,\vertical}
+	{\pgfmathsetmacro{\next}{int(\x + 1)}
+	\draw (\x\y) -- (\next\y);}
+
+%vertical
+\pgfmathparse{\vertical-1}
+\foreach \x in {1,3,...,\hori}
+\foreach \y in {1,...,\pgfmathresult}
+	{\pgfmathsetmacro{\next}{int(\y + 1)}
+	\draw (\x\y) -- (\x\next);}
+
+\end{tikzpicture}
+}

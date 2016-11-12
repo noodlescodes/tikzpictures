@@ -1,0 +1,65 @@
+\usepackage{tikz}
+
+\newcommand{\halfdiamond}[1]{
+\begin{tikzpicture}[every node/.style={draw,circle,thick,fill=black,inner sep=2pt}]
+\def\size{#1}
+\xdef\horizontal{3}
+\pgfmathparse{\size + 1}
+\xdef\vertical{\pgfmathresult}
+
+%vertices
+\xdef\k{\size}
+\foreach \y in {\size,...,1}{
+	\foreach \x in {1,...,\horizontal}{
+		\pgfmathsetmacro{\pos}{int(\x+\k)}
+		\node (\x a\y) at (\pos,\y) {};}
+	\pgfmathparse{int(\horizontal+2)}
+	\xdef\horizontal{\pgfmathresult}
+	\pgfmathparse{int(\k-1)}
+	\xdef\k{\pgfmathresult}
+}
+
+\pgfmathparse{int(\horizontal-2)}
+\xdef\horizontal{\pgfmathresult}
+\foreach \x in {1,...,\horizontal} {
+	\pgfmathsetmacro{\pos}{int(\x + 1)}
+	\node (\x a0) at (\pos,0) {};}
+
+
+%edges
+%horizontal
+\xdef\horizontal{3}
+\foreach \y in {\size,...,1}{
+	\draw (1a\y)--(\horizontal a\y);
+	\pgfmathparse{int(\horizontal+2)}
+	\xdef\horizontal{\pgfmathresult}
+}
+\pgfmathparse{int(\horizontal - 2)}
+\xdef\horizontal{\pgfmathresult}
+\draw (1a0) -- (\horizontal a0);
+
+%vertical
+\xdef\horizontal{5}
+\pgfmathparse{int(\size - 1)}
+\xdef\s{\pgfmathresult}
+\foreach \y in {\s,...,2} {
+	\xdef\k{2}
+	\foreach \x in {1,3,...,\horizontal} {
+		\pgfmathsetmacro{\next}{int(\y-1)}
+		\draw (\x a\y) -- (\k a\next);
+		\pgfmathparse{int(\k+2)}
+		\xdef\k{\pgfmathresult}}
+	\pgfmathparse{int(\horizontal+2)}
+	\xdef\horizontal{\pgfmathresult}
+}
+\foreach \x in {1,3}{
+	\pgfmathsetmacro{\next}{int(\size-1)}
+	\pgfmathsetmacro{\xr}{int(\x+1)}
+	\draw (\x a\size) -- (\xr a\next);
+}
+\pgfmathparse{2*\size+1}
+\xdef\horizontal{\pgfmathresult}
+\foreach \x in {1,3,...,\horizontal}
+	\draw (\x a1) -- (\x a0);
+\end{tikzpicture}
+}
